@@ -32,53 +32,67 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Punch"))
+
+        // Verifica se o jogador está no chão
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, rangeGround, ~maskGround);
+
+        // Movimento horizontal
+        float horizontal = joystick.directionJoystick.x;
+        // Movimento vertical
+        float vertical = joystick.directionJoystick.y;
+
+        // Rotação baseada na câmera
+        moveDirection = new Vector3(horizontal, 0f, vertical);
+        Vector3 cameraForward = cameraTransform.forward;
+        cameraForward.y = 0f;
+        Quaternion newRotation = Quaternion.LookRotation(cameraForward);
+
+        // Normaliza a direção do movimento
+        if (moveDirection.magnitude > 0.1f)
         {
-            // Verifica se o jogador está no chão
-            isGrounded = Physics.Raycast(transform.position, Vector3.down, rangeGround, ~maskGround);
+            moveDirection.Normalize();
 
-            // Movimento horizontal
-            float horizontal = joystick.directionJoystick.x;
-            // Movimento vertical
-            float vertical = joystick.directionJoystick.y;
+            Vector3 camRight = cameraTransform.right;
+            camRight.y = 0;
 
-            // Rotação baseada na câmera
-            moveDirection = new Vector3(horizontal, 0f, vertical);
-            Vector3 cameraForward = cameraTransform.forward;
-            cameraForward.y = 0f;
-            Quaternion newRotation = Quaternion.LookRotation(cameraForward);
+            // Calcula a nova rotação baseada na direção do movimento e na orientação da câmera
+            Quaternion newRotationFreeRot = Quaternion.LookRotation(cameraForward * moveDirection.z + camRight * moveDirection.x);
 
-            // Normaliza a direção do movimento
-            if (moveDirection.magnitude > 0.1f)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Punch")) // se nao estiver dando soco
             {
-                moveDirection.Normalize();
-
-                Vector3 camRight = cameraTransform.right;
-                camRight.y = 0;
-
-                // Calcula a nova rotação baseada na direção do movimento e na orientação da câmera
-                Quaternion newRotationFreeRot = Quaternion.LookRotation(cameraForward * moveDirection.z + camRight * moveDirection.x);
                 transform.rotation = Quaternion.Slerp(transform.rotation, newRotationFreeRot, Time.deltaTime * 10f);
             }
-
-            // Normaliza a direção do movimento se estiver diagonal
-            if (moveDirection.magnitude > 1f)
+             else
             {
-                moveDirection.Normalize();
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotationFreeRot, Time.deltaTime * 3.3f);
             }
+        }
 
-            // Move o jogador
-            Vector3 moveVelocity = moveDirection * moveSpeed;
-            moveVelocity = newRotation * moveVelocity;
+        // Normaliza a direção do movimento se estiver diagonal
+        if (moveDirection.magnitude > 1f)
+        {
+            moveDirection.Normalize();
+        }
 
-            if (moveDirection.magnitude > 0.5f)
+        // Move o jogador
+        Vector3 moveVelocity = moveDirection * moveSpeed;
+        moveVelocity = newRotation * moveVelocity;
+
+        if (moveDirection.magnitude > 0.5f)
+        {
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Punch")) // se nao estiver dando soco
             {
-                rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
+                rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z); // velocidade normal
             }
             else
             {
-                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                rb.velocity = new Vector3(moveVelocity.x/3, rb.velocity.y, moveVelocity.z/3); // 3 vezes mais lento durante soco
             }
         }
+        else
+        {
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
+
     }
 }
