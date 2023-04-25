@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CamConfig : MonoBehaviour
 {
-    public int typeCam; // 0 foward, 1 Left and 2 Right
+    public int typeCam; // 0 foward, 1 Left, 2 Right, 3 Speed, 4 Capacity
     public float speedRot;
 
     public Quaternion rot0;

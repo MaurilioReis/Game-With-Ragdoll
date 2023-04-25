@@ -77,8 +77,6 @@ public class JoystickMove : MonoBehaviour
                     Vector2 distanceMoveJoystick = (Vector2)centerJoystick.position - (Vector2)gameObject.transform.position;
 
                     directionJoystick = new Vector2(distanceMoveJoystick.x / reguleDistance, distanceMoveJoystick.y / reguleDistance);
-
-                    Debug.Log(directionJoystick);
                 }
             }
             else

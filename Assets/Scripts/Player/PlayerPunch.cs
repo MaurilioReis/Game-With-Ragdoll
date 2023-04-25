@@ -21,7 +21,7 @@ public class PlayerPunch : MonoBehaviour
     {
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Punch") && collision.gameObject.tag == "Mob")
         {
-            MobController scriptMob = collision.gameObject.GetComponent<MobController>();
+            BodyController scriptMob = collision.gameObject.GetComponent<BodyController>();
             scriptMob.ReceiveAtack(transform, forcePunch);
 
 
