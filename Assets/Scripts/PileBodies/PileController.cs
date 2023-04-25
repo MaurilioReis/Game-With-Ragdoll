@@ -20,6 +20,7 @@ public class PileController : MonoBehaviour
 
             GameObject newSlot = Instantiate(emptySlot, gameObjectPile.transform.position + offsetSlotY, gameObjectPile.transform.rotation);
             newSlot.name = "Slot 1";
+            //newSlot.transform.SetParent(gameObjectPile.transform);
 
             FixedJoint joint = newSlot.gameObject.GetComponent<FixedJoint>();
             joint.connectedBody = GetComponent<Rigidbody>();
@@ -33,6 +34,7 @@ public class PileController : MonoBehaviour
 
             GameObject newSlot = Instantiate(emptySlot, positionSlot, lastTransformPile.rotation);
             newSlot.name = "Slot " + (pileBodies.Count + 1);
+            //newSlot.transform.SetParent(gameObjectPile.transform);
 
             FixedJoint joint = newSlot.gameObject.GetComponent<FixedJoint>();
             joint.connectedBody = lastTransformPile.gameObject.GetComponent<Rigidbody>();

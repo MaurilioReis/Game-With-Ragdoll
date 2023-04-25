@@ -1813,7 +1813,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389847077}
   m_LocalRotation: {x: 0.38268346, y: -0.000003647756, z: 0.0000015271671, w: 0.9238796}
-  m_LocalPosition: {x: -0.000026966612, y: 12.366194, z: -8.786318}
+  m_LocalPosition: {x: 0.000064960346, y: 24.033455, z: -20.45358}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9398,11 +9398,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 791222972734928101, guid: 33ee38a894a10f04896caff9633bec08,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267896486499403953, guid: 33ee38a894a10f04896caff9633bec08,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1267896487960455966, guid: 33ee38a894a10f04896caff9633bec08,
         type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1042813426}
+    - target: {fileID: 1267896487960455966, guid: 33ee38a894a10f04896caff9633bec08,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1267896487960455966, guid: 33ee38a894a10f04896caff9633bec08,
         type: 3}
       propertyPath: cameraTransform

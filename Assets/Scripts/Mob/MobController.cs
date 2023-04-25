@@ -11,6 +11,7 @@ public class MobController : MonoBehaviour
     Rigidbody rbHip;
 
     bool inPile = false;
+    Quaternion rotInPile = new Quaternion(90, 0, 0, 0);
     Transform posPile;
     void Start()
     {
@@ -33,16 +34,25 @@ public class MobController : MonoBehaviour
 
         anim.enabled = false;
 
+        StartCoroutine("waitToActiveTriggerPile");
+    }
+
+    IEnumerator waitToActiveTriggerPile()
+    {
+        yield return new WaitForSeconds(3);
+
         colTriggerPile.enabled = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
             PileController scriptPile = other.GetComponent<PileController>();
             if (scriptPile.pileBodies.Count < scriptPile.limitPile)
             {
+                colTriggerPile.enabled = false;
+
                 posPile = scriptPile.AddToPile();
                 TakeBodyToPile();
             }
@@ -75,6 +85,7 @@ public class MobController : MonoBehaviour
             if (transform.position != posPile.position)
             {
                 transform.position = Vector3.Lerp(transform.position, posPile.position, 5 * Time.deltaTime);
+                transform.localRotation = Quaternion.Lerp(transform.localRotation, rotInPile, 10 * Time.deltaTime);
             }
             else
             {
