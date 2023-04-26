@@ -10,18 +10,25 @@ public class Soul : MonoBehaviour
     CapsuleCollider col;
     bool collected;
 
+    [HideInInspector]
     public float value;
+
+    public List<int> choicesValues;
     public GameObject valueGO;
     GameObject instPrice;
 
     Transform targetCam;
 
+    public GameObject fxSoulImpact;
+
     private void Start()
     {
         StartCoroutine("EnableCol");
 
-        value = Random.Range(100, 1000);
-        transform.localScale = new Vector3(value / 1000, value / 1000, value / 1000);
+        value = choicesValues[Random.Range(0, choicesValues.Count)];
+
+        Transform apparence = transform.GetChild(0);
+        apparence.localScale = new Vector3(value / 700, value / 700, value / 700);
 
         instPrice = Instantiate(valueGO, transform.position, transform.rotation);
         TMP_Text txt = instPrice.transform.GetChild(0).GetComponent<TMP_Text>();
@@ -63,8 +70,12 @@ public class Soul : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            ParticleSystem fxImpact = Instantiate(fxSoulImpact, transform.position, transform.rotation).GetComponent<ParticleSystem>();
+            fxImpact.emission.SetBurst(0, new ParticleSystem.Burst(0, value/20));
             Destroy(gameObject);
             Destroy(instPrice);
+
+            GameObject.FindWithTag("EventSystem").GetComponent<SoulSystem>().AddValue((int)value);
         }
     }
 
