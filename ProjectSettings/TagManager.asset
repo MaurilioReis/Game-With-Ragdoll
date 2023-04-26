@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Mob
   - PosSacrifice
+  - Soul
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - Ignore Col Mob
   - Interaction
-  - 
+  - Soul
   - 
   - 
   - 
