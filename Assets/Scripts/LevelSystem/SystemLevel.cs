@@ -17,6 +17,7 @@ public class SystemLevel : MonoBehaviour
     public Image fillBarXp;
     public TMP_Text textInfoLevel;
     public TMP_Text textLVL;
+    Vector3 startSizeLVL;
 
     [Header("Parameters")]
     public PlayerController playerC;
@@ -32,10 +33,24 @@ public class SystemLevel : MonoBehaviour
     [HideInInspector]
     public int bonusCapacity = 0;
 
+    [Header("Change the material according to the level")]
+    public SkinnedMeshRenderer meshR;
+    float step;
+
     private void Start()
     {
-        AttSpeed();
-        AttCapacity();
+        UpdateSpeed();
+        UpdateCapacity();
+
+        startSizeLVL = textLVL.transform.localScale;
+    }
+
+    private void Update()
+    {
+        if(textLVL.transform.localScale.magnitude > startSizeLVL.magnitude)
+        {
+            textLVL.transform.localScale = Vector3.Lerp(textLVL.transform.localScale, startSizeLVL, 5 * Time.deltaTime);
+        }
     }
 
     public void AddXP(float xp)
@@ -68,8 +83,13 @@ public class SystemLevel : MonoBehaviour
             textLVL.text = "MAX";
         }
 
-        AttSpeed();
-        AttCapacity();
+        step = (float)level / (float)maxLevel;
+        meshR.material.SetFloat("_Step", step);
+
+        textLVL.transform.localScale = new Vector3(textLVL.transform.localScale.x * 3, textLVL.transform.localScale.y * 3, textLVL.transform.localScale.z*3);
+
+        UpdateSpeed();
+        UpdateCapacity();
     }
 
     void UpdateFillBar()
@@ -89,7 +109,7 @@ public class SystemLevel : MonoBehaviour
         }
     }
 
-    public void AttSpeed()
+    public void UpdateSpeed()
     {
         float bonusLevel = (float)level / 6;
 
@@ -99,11 +119,11 @@ public class SystemLevel : MonoBehaviour
         txtSpeed.text = "SPEED: " + apparenceSpeed.ToString("0.00");
 
         playerC.moveSpeed = defaultSpeed;
-
-        // preciso converter os valores para o animator, considerando que inicia com speed: 1, + 1 do bonus e + 1 do level.
+        float speedAnim = defaultSpeed - 5;
+        playerC.GetComponent<Animator>().speed = 1 + (speedAnim / 10);
     }
 
-    public void AttCapacity()
+    public void UpdateCapacity()
     {
         int bonusLevel = level;
 
@@ -112,19 +132,5 @@ public class SystemLevel : MonoBehaviour
         txtCapacity.text = "CAPACITY: " + defaultCapacity;
 
         pileC.limitPile = defaultCapacity;
-
-        // aqui tudo certo e o LEVEL funciona perfeitamente ja
-    }
-
-    // ANOTAÇÕES
-
-    // Adc xp no soco, adc xp ao derrubar, diminuir a velocidade para pegar os corpos, fazer o shader de troca de cores e fazer as compras.
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            AddXP(999);
-        }
     }
 }

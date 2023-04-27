@@ -44,7 +44,7 @@ public class BodyController : MonoBehaviour
 
     IEnumerator waitToActiveTriggerPile()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
 
         colTriggerPile.enabled = true;
     }
@@ -76,6 +76,8 @@ public class BodyController : MonoBehaviour
         rbHip.isKinematic = true;
 
         isPilingUp = true;
+
+        colBase.enabled = true;
     }
 
     public void DropSacrifice()

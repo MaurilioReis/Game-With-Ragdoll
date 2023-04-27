@@ -9,6 +9,7 @@ public class BodyCollector : MonoBehaviour
     public GameObject dropSoul;
     public Transform posDirectionDropSoul;
     public float forceDrop = 1;
+    public SystemLevel systemLevel;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,6 +23,8 @@ public class BodyCollector : MonoBehaviour
 
             GameObject soul = Instantiate(dropSoul, posDirectionDropSoul.position, posDirectionDropSoul.rotation);
             soul.GetComponent<Rigidbody>().AddForce(posDirectionDropSoul.forward * forceDrop, ForceMode.Impulse);
+
+            systemLevel.AddXP(450);
         }
     }
 }

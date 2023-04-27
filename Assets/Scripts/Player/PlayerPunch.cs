@@ -11,6 +11,8 @@ public class PlayerPunch : MonoBehaviour
 
     ShakeCam shakeCam;
 
+    public SystemLevel systemLevel;
+
     private void Start()
     {
         shakeCam = GetComponent<ShakeCam>();
@@ -24,10 +26,11 @@ public class PlayerPunch : MonoBehaviour
             BodyController scriptMob = collision.gameObject.GetComponent<BodyController>();
             scriptMob.ReceiveAtack(transform, forcePunch);
 
-
             Vector3 offsetY = new Vector3(0, 1.5f, 0);
             GameObject instFX = Instantiate(fxImpact, collision.transform.position + offsetY, collision.transform.rotation);
             instFX.transform.SetParent(collision.transform);
+
+            systemLevel.AddXP(15);
 
             shakeCam.Shake();
 
